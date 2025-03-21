@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "src": "/api/submit-issue",
+      "methods": ["POST"],
+      "dest": "/api/submit-issue.js"
+    }
+  ]
+}
