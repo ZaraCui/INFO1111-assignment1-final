@@ -8,7 +8,6 @@ export default function Announcements() {
 
   return (
     <>
-      <Navbar />
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Announcements</h1>
         <div className="space-y-4">

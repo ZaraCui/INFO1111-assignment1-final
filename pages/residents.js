@@ -10,7 +10,6 @@ const residents = [
 export default function Residents() {
   return (
     <>
-      <Navbar />
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Residents</h1>
         <div className="bg-white p-6 rounded-2xl shadow">
