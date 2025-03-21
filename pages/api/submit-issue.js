@@ -2,9 +2,10 @@ export default function handler(req, res) {
   if (req.method === 'POST') {
     const { name, unit, description } = req.body;
     console.log("Received issue:", { name, unit, description });
-    res.status(302).setHeader('Location', '/?submitted=true');
+    res.writeHead(302, { Location: '/?submitted=true' });
     res.end();
   } else {
-    res.status(405).json({ message: "Method not allowed" });
+    res.writeHead(405, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: "Method not allowed" }));
   }
 }
