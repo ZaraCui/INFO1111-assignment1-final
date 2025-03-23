@@ -2,15 +2,17 @@ export default function Home() {
   return (
     <main className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-4">Welcome to Strata</h1>
-      <p className="text-gray-600 mb-8">Your strata management portal for Oceanview Heights</p>
+      <p className="text-gray-600 mb-8">
+        Your strata management portal for Oceanview Heights
+      </p>
 
-      {/* botton */}
+      {/* 按钮组件（Screenshot 8.4.1） */}
       <button className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
         Explore More
       </button>
 
+      {/* 卡片组件（Screenshot 8.4.2） */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* hover */}
         <div className="bg-white rounded-2xl shadow p-5 transition-transform duration-300 hover:shadow-2xl hover:scale-105">
           <h2 className="text-xl font-semibold mb-2">Total Funds</h2>
           <p className="text-2xl font-bold text-green-600">$245,678</p>
@@ -27,6 +29,11 @@ export default function Home() {
           <p className="text-sm text-gray-500">7:00 PM Committee Meeting</p>
         </div>
       </div>
+
+      {/* hover color change */}
+      <p className="mt-8 text-gray-700 hover:text-black cursor-pointer transition duration-300">
+        Hover over this text to see color change effect.
+      </p>
     </main>
   );
 }
