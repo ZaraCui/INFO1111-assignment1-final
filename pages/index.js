@@ -31,7 +31,7 @@ export default function Home() {
       </div>
 
       {/* hover color change */}
-      <p className="mt-8 text-gray-700 hover:text-black cursor-pointer transition duration-300">
+      <p className="mt-8 text-gray-700 hover:text-red-500 cursor-pointer transition duration-300">
         Hover over this text to see color change effect.
       </p>
     </main>

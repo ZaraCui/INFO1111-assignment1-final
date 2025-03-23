@@ -25,9 +25,11 @@ export default function SubmitForm() {
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
-          <textarea name="description" rows="4" className="w-full border border-gray-300 p-2 rounded-xl"></textarea>
+          <textarea name="description" rows="4" required className="w-full border border-gray-300 p-2 rounded-xl"></textarea>
         </div>
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">Submit</button>
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition">
+          Submit
+        </button>
       </form>
     </div>
   );
