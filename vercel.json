@@ -1,9 +1,32 @@
 {
+  "version": 2,
+  "builds": [
+    { "src": "next.config.js", "use": "@vercel/next" }
+  ],
   "routes": [
     {
       "src": "/api/submit-issue",
       "methods": ["POST"],
       "dest": "/api/submit-issue.js"
+    },
+    {
+      "src": "/api/form-data",
+      "methods": ["GET"],
+      "dest": "/api/form-data.js"
     }
-  ]
+  ],
+  "redirects": [
+    {
+      "source": "/form-submitted",
+      "destination": "/thanks",
+      "statusCode": 302
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/weekly-report",
+      "schedule": "0 10 * * 1"
+    }
+  ],
+  "regions": ["syd1"]
 }
