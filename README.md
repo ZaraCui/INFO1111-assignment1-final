@@ -4,13 +4,23 @@ A sample Next.js project with TailwindCSS for strata management.
 
 
 ## Vercel Configuration (`vercel.json`)
-This project uses a customized `vercel.json` file to demonstrate advanced deployment configurations on Vercel:
+his project uses a customized `vercel.json` file to demonstrate advanced Vercel deployment configurations, including scheduled tasks, redirect rules, and regional deployment optimization.
 
-- **Builds:** Defines the build process using Next.js.
-- **Routes:** Custom API routing (`/api/submit-issue`, `/api/form-data`, etc.).
-- **Redirects:** Handles POST request redirection to a success page.
-- **Cron Jobs:** Automates weekly report generation using scheduled serverless functions.
-- **Deployment Region:** Deploys the site to the `syd1` (Sydney) region to suit the Strata scenario.
+###  Key Configuration Options:
+
+| Property       | Description |
+|----------------|-------------|
+| `version`      | Specifies the Vercel configuration version (always set to `2`). |
+| `builds`       | Defines how to build the project. Here, Next.js is used as the framework. |
+| `redirects`    | Automatically redirects users after form submission (e.g., `/form-submitted` → `/thanks` with status `302`). |
+| `crons`        | Defines serverless cron jobs. This project uses a scheduled API function (`/api/weekly-report`) that runs every Monday at 10:00 AM. |
+| `regions`      | Specifies the deployment region for optimal performance. `syd1` is used to suit the Oceanview Heights strata scenario (Sydney-based). |
+
+### Notes:
+
+- `routes` have been intentionally **removed** to avoid conflicts with `redirects`, as Vercel does not allow mixing them in the same configuration file.
+- All API routes are handled automatically by Next.js under `pages/api/`, so manual routing is not required.
+
 
 ## Serverless API Functions
 The following serverless functions are implemented to simulate real-world use cases in strata building management:
