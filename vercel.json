@@ -3,18 +3,6 @@
   "builds": [
     { "src": "next.config.js", "use": "@vercel/next" }
   ],
-  "routes": [
-    {
-      "src": "/api/submit-issue",
-      "methods": ["POST"],
-      "dest": "/api/submit-issue.js"
-    },
-    {
-      "src": "/api/form-data",
-      "methods": ["GET"],
-      "dest": "/api/form-data.js"
-    }
-  ],
   "redirects": [
     {
       "source": "/form-submitted",
