@@ -1,9 +1,7 @@
+# INFO1111 Assignment 1 
 # Strata Management Portal
-
 A sample Next.js project with TailwindCSS for strata management.
 
-
-# INFO1111 Assignment 1 
 
 ## Vercel Configuration (`vercel.json`)
 This project uses a customized `vercel.json` file to demonstrate advanced deployment configurations on Vercel:
@@ -28,6 +26,15 @@ The site includes multiple HTML, CSS, and JavaScript demonstrations to fulfill S
 - Multiple functional pages (e.g., Dashboard, Finance, Meetings, Residents).
 - Redirect and HTTP response handling demonstration.
 - Explanation of HTTP methods (GET vs POST) and status codes.
+
+## Some Features
+
+This project includes advanced features to meet the STRONG rating requirements:
+
+- Developed three serverless functions under `/pages/api/`, and evaluated the difference with edge functions. Edge functions run on Vercel's edge network for low latency but have limited access to Node.js APIs, so serverless functions were more appropriate for this use case.
+- Created five additional web pages demonstrating HTML, CSS, and JavaScript features, including form handling, DOM interaction, and layout styling using Tailwind CSS.
+- Implemented a maintenance request form using GET/POST methods and a 302 redirect to a thank-you page.
+
 
 ## Additional Notes
 - This project demonstrates full integration between frontend and backend features using Vercel serverless capabilities.
