@@ -1,13 +1,10 @@
-import Navbar from "../components/Navbar";
-import "../styles/globals.css";
-
-function MyApp({ Component, pageProps }) {
+export default function SubmitIssue() {
   return (
-    <>
-      <Navbar />
-      <Component {...pageProps} />
-    </>
+    <main className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Submit a Maintenance Issue</h1>
+      <form>
+        {/* Your form fields here */}
+      </form>
+    </main>
   );
 }
-
-export default MyApp;
