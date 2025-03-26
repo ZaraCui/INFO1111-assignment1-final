@@ -1,12 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Home() {
+  const [inputName, setInputName] = useState("");
+  const [inputUnit, setInputUnit] = useState("");
+  const [inputDesc, setInputDesc] = useState("");
   const [showToast, setShowToast] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000); // Auto-close toast after 3s
+
+    const res = await fetch("/api/submit-issue", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: inputName,
+        unit: inputUnit,
+        description: inputDesc,
+      }),
+    });
+
+    if (res.ok) {
+      setShowToast(true);
+      setInputName("");
+      setInputUnit("");
+      setInputDesc("");
+      setTimeout(() => setShowToast(false), 3000);
+    } else {
+      alert("Something went wrong.");
+    }
   };
 
   return (
@@ -40,11 +63,28 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Simulated form */}
+      {/* Issue submission form */}
       <form onSubmit={handleSubmit} className="max-w-md space-y-4">
         <input
           type="text"
-          placeholder="Enter your message"
+          placeholder="Your name"
+          value={inputName}
+          onChange={(e) => setInputName(e.target.value)}
+          className="w-full p-2 border rounded"
+          required
+        />
+        <input
+          type="text"
+          placeholder="Unit number"
+          value={inputUnit}
+          onChange={(e) => setInputUnit(e.target.value)}
+          className="w-full p-2 border rounded"
+          required
+        />
+        <textarea
+          placeholder="Describe the issue..."
+          value={inputDesc}
+          onChange={(e) => setInputDesc(e.target.value)}
           className="w-full p-2 border rounded"
           required
         />
@@ -52,7 +92,7 @@ export default function Home() {
           type="submit"
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
         >
-          Submit Message
+          Submit Issue
         </button>
       </form>
 
@@ -64,7 +104,7 @@ export default function Home() {
       {/* Toast */}
       {showToast && (
         <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg animate-fade-in-out z-50">
-          ✅ Your message has been sent!
+          ✅ Your issue has been submitted!
         </div>
       )}
     </main>
