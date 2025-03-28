@@ -1,10 +1,7 @@
-import Navbar from "../components/Navbar";
-
 export default function Documents() {
   return (
     <div>
-      {/* Navigation bar at the top */}
-      <Navbar />
+      
 
       {/* Main content area */}
       <div className="p-6">
