@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -13,7 +12,6 @@ export default function SubmitIssue() {
 
   return (
     <>
-      <Navbar />
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Submit a Maintenance Issue</h1>
         <form action="/api/submit-issue" method="POST" className="bg-white p-6 rounded-2xl shadow space-y-4">
