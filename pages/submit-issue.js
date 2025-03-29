@@ -1,23 +1,63 @@
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+import { useState } from "react";
+import Layout from "../components/Layout";
 
-  const recipient = process.env.EMAIL_RECIPIENT || "admin@default.com";
-  const secret = process.env.API_SECRET;
+export default function SubmitIssue() {
+  const [name, setName] = useState("");
+  const [unit, setUnit] = useState("");
+  const [description, setDescription] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
-  const providedSecret = req.headers["x-api-secret"];
-  if (secret && providedSecret !== secret) {
-    return res.status(403).json({ error: "Unauthorized: Invalid API secret" });
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const { name, unit, description } = req.body;
+    const res = await fetch("/api/submit-issue", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-secret": process.env.NEXT_PUBLIC_API_SECRET || "", // 若需安全验证
+      },
+      body: JSON.stringify({ name, unit, description }),
+    });
 
-  console.log("📬 Maintenance request received:");
-  console.log("To:", recipient);
-  console.log("Name:", name);
-  console.log("Unit:", unit);
-  console.log("Description:", description);
+    if (res.ok) {
+      setShowToast(true);
+      setName("");
+      setUnit("");
+      setDescription("");
+      setTimeout(() => setShowToast(false), 3000);
+    } else {
+      alert("Submission failed.");
+    }
+  };
 
-  return res.status(200).json({ message: "Request received", submitted: true });
+  return (
+    <Layout>
+      <main className="p-6 bg-gray-100 min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">Submit a Maintenance Issue</h1>
+        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow space-y-4 max-w-md">
+          <div>
+            <label className="block mb-1 font-medium">Your Name</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} name="name" required className="w-full border rounded p-2" />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Unit Number</label>
+            <input value={unit} onChange={(e) => setUnit(e.target.value)} name="unit" required className="w-full border rounded p-2" />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Issue Description</label>
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} name="description" required className="w-full border rounded p-2" />
+          </div>
+          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Submit
+          </button>
+        </form>
+
+        {showToast && (
+          <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
+            ✅ Your issue has been submitted!
+          </div>
+        )}
+      </main>
+    </Layout>
+  );
 }
