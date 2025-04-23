@@ -1,37 +1,63 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { useState } from "react";
+import Layout from "../components/Layout";
 
 export default function SubmitIssue() {
-  const router = useRouter();
+  const [name, setName] = useState("");
+  const [unit, setUnit] = useState("");
+  const [description, setDescription] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
-  useEffect(() => {
-    if (router.query.submitted === "true") {
-      alert("Your maintenance request has been submitted successfully!");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch("/api/submit-issue", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-secret": process.env.NEXT_PUBLIC_API_SECRET || "", // 若需安全验证
+      },
+      body: JSON.stringify({ name, unit, description }),
+    });
+
+    if (res.ok) {
+      setShowToast(true);
+      setName("");
+      setUnit("");
+      setDescription("");
+      setTimeout(() => setShowToast(false), 3000);
+    } else {
+      alert("Submission failed.");
     }
-  }, [router.query]);
+  };
 
   return (
-    <>
+    <Layout>
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Submit a Maintenance Issue</h1>
-        <form action="/api/submit-issue" method="POST" className="bg-white p-6 rounded-2xl shadow space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow space-y-4 max-w-md">
           <div>
             <label className="block mb-1 font-medium">Your Name</label>
-            <input name="name" required className="w-full border rounded p-2" />
+            <input value={name} onChange={(e) => setName(e.target.value)} name="name" required className="w-full border rounded p-2" />
           </div>
           <div>
             <label className="block mb-1 font-medium">Unit Number</label>
-            <input name="unit" required className="w-full border rounded p-2" />
+            <input value={unit} onChange={(e) => setUnit(e.target.value)} name="unit" required className="w-full border rounded p-2" />
           </div>
           <div>
             <label className="block mb-1 font-medium">Issue Description</label>
-            <textarea name="description" required className="w-full border rounded p-2" />
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} name="description" required className="w-full border rounded p-2" />
           </div>
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
             Submit
           </button>
         </form>
+
+        {showToast && (
+          <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
+            ✅ Your issue has been submitted!
+          </div>
+        )}
       </main>
-    </>
+    </Layout>
   );
 }
