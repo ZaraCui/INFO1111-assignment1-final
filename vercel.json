@@ -17,10 +17,5 @@
       "schedule": "0 10 * * 1"
     }
   ],
-  "routes": [
-    { "src": "/api/(.*\\.php)", "dest": "/api/$1" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ],
   "regions": ["syd1"]
 }
