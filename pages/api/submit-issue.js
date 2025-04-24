@@ -1,4 +1,12 @@
-export default function handler(req, res) {
+import { serialize } from "cookie";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -18,6 +26,14 @@ export default function handler(req, res) {
   console.log("Name:", name);
   console.log("Unit:", unit);
   console.log("Description:", description);
+
+  // ✅ 设置 cookie，保留用户姓名
+  res.setHeader("Set-Cookie", serialize("username", name, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+    httpOnly: false,
+    sameSite: "lax",
+  }));
 
   return res.status(200).json({ message: "Request received", submitted: true });
 }
