@@ -1,15 +1,21 @@
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
-const residents = [
-  "Zara Cui", "Jasmine Liu", "Rebecca Xiong", "David Cui", "Kangyi Wang",
-  "Fangye Huang", "Hana Wang", "Hanqi Wang", "Zhiyi Zhang", "Xinyan Hu",
-  "Yue Han", "Yueduo Bao", "Alex Lee", "Sophie Chen", "Eric Wu", "Linda Gao",
-  "Michael Zhang", "Rachel Lin", "Jason Tan", "Emily Zhou"
-];
-
 export default function Residents() {
+  const [residents, setResidents] = useState([]);
+
+  useEffect(() => {
+    const fetchResidents = async () => {
+      const res = await fetch("/api/get-all-residents");
+      const data = await res.json();
+      setResidents(data);
+    };
+    fetchResidents();
+  }, []);
+
   return (
     <>
+      <Navbar />
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Residents</h1>
         <div className="bg-white p-6 rounded-2xl shadow">
@@ -23,12 +29,12 @@ export default function Residents() {
               </tr>
             </thead>
             <tbody>
-              {residents.map((name, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="p-2 border-b">{index + 1}</td>
-                  <td className="p-2 border-b">{name}</td>
-                  <td className="p-2 border-b">Unit {index + 101}</td>
-                  <td className="p-2 border-b">{index % 4 === 0 ? "Yes" : "No"}</td>
+              {residents.map((r, i) => (
+                <tr key={r.id} className="hover:bg-gray-50">
+                  <td className="p-2 border-b">{i + 1}</td>
+                  <td className="p-2 border-b">{r.name}</td>
+                  <td className="p-2 border-b">{r.unit}</td>
+                  <td className="p-2 border-b">{r.has_levy ? "Yes" : "No"}</td>
                 </tr>
               ))}
             </tbody>
