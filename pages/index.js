@@ -1,7 +1,17 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
+import { parse } from "cookie";
 
-export default function Home() {
+export async function getServerSideProps({ req }) {
+  const cookies = parse(req.headers.cookie || "");
+  const username = cookies.username || null;
+
+  return {
+    props: { username },
+  };
+}
+
+export default function Home({ username }) {
   const [inputName, setInputName] = useState("");
   const [inputUnit, setInputUnit] = useState("");
   const [inputDesc, setInputDesc] = useState("");
@@ -37,6 +47,9 @@ export default function Home() {
     <Layout>
       <main className="p-6 bg-gray-100 min-h-screen relative">
         <h1 className="text-3xl font-bold mb-4">Welcome to Strata</h1>
+        {username && (
+          <p className="text-sm text-gray-600 mb-4">Welcome back, {username}!</p>
+        )}
         <p className="text-gray-600 mb-8">
           Your strata management portal for Oceanview Heights
         </p>
