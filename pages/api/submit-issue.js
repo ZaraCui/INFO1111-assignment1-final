@@ -27,6 +27,16 @@ export default async function handler(req, res) {
   console.log("Unit:", unit);
   console.log("Description:", description);
 
+  const { error } = await supabase.from("issues").insert([
+    { name, unit, description }
+  ]);
+
+  if (error) {
+    console.error("❌ Supabase error:", error);
+    return res.status(500).json({ error: "Database insert failed", detail: error });
+  }
+
+
   // ✅ 设置 cookie，保留用户姓名
   res.setHeader("Set-Cookie", serialize("username", name, {
     path: "/",
