@@ -1,23 +1,28 @@
-import { useEffect, useState } from "react";
-import { withServerSideAuth } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
 import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
 import Layout from "../components/Layout";
 
-// Protect route using Clerk
-export const getServerSideProps = withServerSideAuth();
+export async function getServerSideProps(context) {
+  const { userId } = getAuth(context.req);
+  if (!userId) {
+    return {
+      redirect: {
+        destination: "/sign-in",
+        permanent: false,
+      },
+    };
+  }
+  return { props: {} };
+}
 
 export default function SubmitIssue() {
   const { user } = useUser();
+
   const [name, setName] = useState("");
   const [unit, setUnit] = useState("");
   const [description, setDescription] = useState("");
   const [showToast, setShowToast] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      setName(user.fullName || user.username || user.emailAddresses[0]?.emailAddress || "");
-    }
-  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +37,7 @@ export default function SubmitIssue() {
 
     if (res.ok) {
       setShowToast(true);
+      setName("");
       setUnit("");
       setDescription("");
       setTimeout(() => setShowToast(false), 3000);
@@ -41,7 +47,7 @@ export default function SubmitIssue() {
   };
 
   return (
-    <Layout>
+    <Layout username={user?.firstName || user?.username}>
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-2xl font-bold mb-4">Submit a Maintenance Issue</h1>
         <form
@@ -55,7 +61,6 @@ export default function SubmitIssue() {
               onChange={(e) => setName(e.target.value)}
               required
               className="w-full border rounded p-2"
-              readOnly // Prevent editing by user
             />
           </div>
           <div>
