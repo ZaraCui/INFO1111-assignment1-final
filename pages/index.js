@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { parse } from "cookie";
-import Navbar from "../components/Navbar";
 
 export async function getServerSideProps({ req }) {
   const cookies = parse(req.headers.cookie || "");
