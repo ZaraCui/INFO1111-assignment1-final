@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Layout from "../components/Layout";
 import { parse } from "cookie";
 
 export async function getServerSideProps({ req }) {
@@ -43,8 +44,7 @@ export default function Home({ username }) {
   };
 
   return (
-    <>
-      <Navbar username={username} />
+    <Layout username={username}>
       <main className="p-6 bg-gray-100 min-h-screen relative">
         <h1 className="text-3xl font-bold mb-4">Welcome to Strata</h1>
         {username && (
@@ -58,17 +58,23 @@ export default function Home({ username }) {
           <div className="bg-white rounded-2xl shadow p-5 transition-transform duration-300 hover:shadow-2xl hover:scale-105">
             <h2 className="text-xl font-semibold mb-2">Total Funds</h2>
             <p className="text-2xl font-bold text-green-600">$245,678</p>
-            <p className="text-sm text-gray-500">Admin: $78,450 | Capital: $167,228</p>
+            <p className="text-sm text-gray-500">
+              Admin: $78,450 | Capital: $167,228
+            </p>
           </div>
           <div className="bg-white rounded-2xl shadow p-5 transition-transform duration-300 hover:shadow-2xl hover:scale-105">
             <h2 className="text-xl font-semibold mb-2">Residents</h2>
             <p className="text-2xl font-bold">86</p>
-            <p className="text-sm text-gray-500">42 units | 12 with outstanding levies</p>
+            <p className="text-sm text-gray-500">
+              42 units | 12 with outstanding levies
+            </p>
           </div>
           <div className="bg-white rounded-2xl shadow p-5 transition-transform duration-300 hover:shadow-2xl hover:scale-105">
             <h2 className="text-xl font-semibold mb-2">Next Meeting</h2>
             <p className="text-2xl font-bold">15 Apr</p>
-            <p className="text-sm text-gray-500">7:00 PM Committee Meeting</p>
+            <p className="text-sm text-gray-500">
+              7:00 PM Committee Meeting
+            </p>
           </div>
         </div>
 
@@ -110,6 +116,6 @@ export default function Home({ username }) {
           </div>
         )}
       </main>
-    </>
+    </Layout>
   );
 }
