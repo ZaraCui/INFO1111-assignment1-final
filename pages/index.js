@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Layout from "../components/Layout";
 import { parse } from "cookie";
+import Navbar from "../components/Navbar";
 
 export async function getServerSideProps({ req }) {
   const cookies = parse(req.headers.cookie || "");
@@ -44,7 +44,8 @@ export default function Home({ username }) {
   };
 
   return (
-    <Layout>
+    <>
+      <Navbar username={username} />
       <main className="p-6 bg-gray-100 min-h-screen relative">
         <h1 className="text-3xl font-bold mb-4">Welcome to Strata</h1>
         {username && (
@@ -53,10 +54,6 @@ export default function Home({ username }) {
         <p className="text-gray-600 mb-8">
           Your strata management portal for Oceanview Heights
         </p>
-
-        <button className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-          Explore More
-        </button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           <div className="bg-white rounded-2xl shadow p-5 transition-transform duration-300 hover:shadow-2xl hover:scale-105">
@@ -108,16 +105,12 @@ export default function Home({ username }) {
           </button>
         </form>
 
-        <p className="mt-8 text-gray-700 hover:text-red-500 cursor-pointer transition duration-300">
-          Hover over this text to see color change effect.
-        </p>
-
         {showToast && (
           <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg animate-fade-in-out z-50">
             ✅ Your issue has been submitted!
           </div>
         )}
       </main>
-    </Layout>
+    </>
   );
 }
