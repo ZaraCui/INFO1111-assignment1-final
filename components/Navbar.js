@@ -2,7 +2,7 @@ import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
 
 export default function Navbar() {
-  const { user } = useUser();
+  const { isSignedIn, user } = useUser();
 
   return (
     <nav className="bg-white shadow px-6 py-4 flex gap-6 text-sm font-medium items-center">
@@ -15,8 +15,19 @@ export default function Navbar() {
       <Link href="/submit-issue">Submit Issue</Link>
 
       <div className="ml-auto flex gap-4 items-center">
-        {user && <span className="text-gray-600">Hi, {user.firstName}</span>}
-        <UserButton />
+        {isSignedIn ? (
+          <>
+            <span className="text-gray-600">Hi, {user.firstName}</span>
+            <UserButton afterSignOutUrl="/" />
+          </>
+        ) : (
+          <Link
+            href="/sign-in"
+            className="text-blue-600 hover:underline font-semibold"
+          >
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );
