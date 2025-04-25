@@ -1,10 +1,20 @@
+import { getAuth } from "@clerk/nextjs/server";
+import { useUser } from "@clerk/nextjs";
 import Layout from "../components/Layout";
 import Image from "next/image";
-import { withServerSideAuth } from "@clerk/nextjs/server";
-import { useUser } from "@clerk/nextjs";
 
-// Protect the route using Clerk
-export const getServerSideProps = withServerSideAuth();
+export async function getServerSideProps(context) {
+  const { userId } = getAuth(context.req);
+  if (!userId) {
+    return {
+      redirect: {
+        destination: "/sign-in",
+        permanent: false
+      }
+    };
+  }
+  return { props: {} };
+}
 
 export default function Documents() {
   const { user } = useUser();

@@ -1,4 +1,5 @@
-import { useUser, withServerSideAuth } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 import Layout from "../components/Layout";
 import {
   BarChart,
@@ -9,11 +10,23 @@ import {
   CartesianGrid,
   ResponsiveContainer
 } from "recharts";
+import { useEffect, useState } from "react";
 
-export const getServerSideProps = withServerSideAuth();
+export async function getServerSideProps(context) {
+  const { userId } = getAuth(context.req);
+  if (!userId) {
+    return {
+      redirect: {
+        destination: "/sign-in",
+        permanent: false
+      }
+    };
+  }
+  return { props: {} };
+}
 
 export default function Finances() {
-  const { user } = useUser(); // Clerk 的用户对象
+  const { user } = useUser();
   const [funds, setFunds] = useState({ admin: 0, capital: 0 });
 
   useEffect(() => {
