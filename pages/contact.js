@@ -1,8 +1,19 @@
-export default function Contact() {
+import Layout from "../components/Layout";
+import { parse } from "cookie";
+
+export async function getServerSideProps({ req }) {
+  const cookies = parse(req.headers.cookie || "");
+  const username = cookies.username || null;
+  return { props: { username } };
+}
+
+export default function Contact({ username }) {
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Contact the Committee</h1>
-      <p>If you have any inquiries, feel free to reach out via email to <a href="mailto:committee@strata.com" className="text-blue-600 underline">committee@strata.com</a></p>
-    </div>
+    <Layout username={username}>
+      <main className="p-6 bg-gray-100 min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">Contact</h1>
+        <p className="text-gray-700">Reach out to your strata committee for support or queries.</p>
+      </main>
+    </Layout>
   );
 }

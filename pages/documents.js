@@ -1,34 +1,18 @@
-export default function Documents() {
+import Layout from "../components/Layout";
+import { parse } from "cookie";
+
+export async function getServerSideProps({ req }) {
+  const cookies = parse(req.headers.cookie || "");
+  const username = cookies.username || null;
+  return {
+    props: { username },
+  };
+}
+
+export default function DocumentsPage({ username }) {
   return (
-    <div>
-      
-
-      {/* Main content area */}
-      <div className="p-6">
-
-        {/* Banner image section */}
-        <div className="mb-8">
-          <img
-            src="/banner.jpg"
-            alt="Strata Management Banner"
-            className="w-full h-auto rounded-2xl shadow-lg"
-          />
-        </div>
-
-        {/* Page title */}
-        <h2 className="text-2xl font-bold mb-4">Documents</h2>
-
-        {/* Link to the PDF file */}
-        <a
-          href="/strata-guide.pdf"
-          className="text-blue-600 underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Strata Guide PDF
-        </a>
-
-      </div>
-    </div>
+    <Layout username={username}>
+      <img src="/building.jpg" className="w-full h-auto" />
+    </Layout>
   );
 }

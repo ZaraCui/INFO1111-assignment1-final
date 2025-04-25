@@ -1,32 +1,19 @@
 import Layout from "../components/Layout";
+import { parse } from "cookie";
 
-const meetings = [
-  { date: '2025-03-01', topic: 'Annual General Meeting', doc: '/meeting-agm.pdf' },
-  { date: '2025-02-20', topic: 'Budget Planning', doc: '/budget-meeting.pdf' },
-];
+export async function getServerSideProps({ req }) {
+  const cookies = parse(req.headers.cookie || "");
+  const username = cookies.username || null;
+  return { props: { username } };
+}
 
-export default function Meetings() {
-  const meetingDay = process.env.NEXT_PUBLIC_MEETING_DAY || "Friday";
-
+export default function Meetings({ username }) {
   return (
-    <Layout>
-      <div className="p-6 space-y-4">
-        <h1 className="text-2xl font-bold">Meeting Records</h1>
-        <p className="text-gray-600 italic">📅 Regular meetings are scheduled on <strong>{meetingDay}</strong>s.</p>
-        <ul className="space-y-2">
-          {meetings.map((m, i) => (
-            <li key={i} className="border p-3 rounded-lg shadow">
-              <p><strong>Date:</strong> {m.date}</p>
-              <p><strong>Topic:</strong> {m.topic}</p>
-              <p>
-                <a href={m.doc} download className="text-blue-600 underline">
-                  Download Document
-                </a>
-              </p>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <Layout username={username}>
+      <main className="p-6 bg-gray-100 min-h-screen">
+        <h1 className="text-2xl font-bold mb-4">Meetings</h1>
+        <p className="text-gray-700">Check upcoming meeting schedules and past records.</p>
+      </main>
     </Layout>
   );
 }
