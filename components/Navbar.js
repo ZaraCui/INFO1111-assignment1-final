@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { UserButton, useUser } from "@clerk/nextjs";
 
-export default function Navbar({ username }) {
+export default function Navbar() {
+  const { user } = useUser();
+
   return (
     <nav className="bg-white shadow px-6 py-4 flex gap-6 text-sm font-medium items-center">
       <Link href="/">Dashboard</Link>
@@ -12,8 +15,8 @@ export default function Navbar({ username }) {
       <Link href="/submit-issue">Submit Issue</Link>
 
       <div className="ml-auto flex gap-4 items-center">
-        {username && <span className="text-gray-600">Hi, {username}</span>}
-        <Link href="/api/logout" className="text-red-500 hover:underline">Logout</Link>
+        {user && <span className="text-gray-600">Hi, {user.firstName}</span>}
+        <UserButton />
       </div>
     </nav>
   );

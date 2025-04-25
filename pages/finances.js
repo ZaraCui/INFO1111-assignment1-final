@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useUser, withServerSideAuth } from "@clerk/nextjs";
 import Layout from "../components/Layout";
-import { parse } from "cookie";
 import {
   BarChart,
   Bar,
@@ -11,14 +10,10 @@ import {
   ResponsiveContainer
 } from "recharts";
 
-// 获取 cookie 中的用户名
-export async function getServerSideProps({ req }) {
-  const cookies = parse(req.headers.cookie || "");
-  const username = cookies.username || null;
-  return { props: { username } };
-}
+export const getServerSideProps = withServerSideAuth();
 
-export default function Finances({ username }) {
+export default function Finances() {
+  const { user } = useUser(); // Clerk 的用户对象
   const [funds, setFunds] = useState({ admin: 0, capital: 0 });
 
   useEffect(() => {
@@ -33,9 +28,16 @@ export default function Finances({ username }) {
   ];
 
   return (
-    <Layout username={username}>
+    <Layout>
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-3xl font-bold mb-4">Finances</h1>
+
+        {user && (
+          <p className="mb-4 text-gray-600">
+            Welcome, <span className="font-medium">{user.fullName}</span>
+          </p>
+        )}
+
         <p className="text-gray-700 mb-8">
           Review financial summaries, levies, and budgets.
         </p>

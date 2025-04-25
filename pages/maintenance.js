@@ -1,14 +1,13 @@
+import { withServerSideAuth } from "@clerk/nextjs/server";
+import { useUser } from "@clerk/nextjs";
 import Layout from "../components/Layout";
-import { parse } from "cookie";
 
-// 获取 cookie 中的 username
-export async function getServerSideProps({ req }) {
-  const cookies = parse(req.headers.cookie || "");
-  const username = cookies.username || null;
-  return { props: { username } };
-}
+// Protect the route
+export const getServerSideProps = withServerSideAuth();
 
-export default function Maintenance({ username }) {
+export default function Maintenance() {
+  const { user } = useUser();
+
   const issues = [
     { title: "Water Leakage", status: "Urgent", unit: "105" },
     { title: "Broken Light in Hallway", status: "Standard", unit: "109" },
@@ -16,9 +15,16 @@ export default function Maintenance({ username }) {
   ];
 
   return (
-    <Layout username={username}>
+    <Layout>
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-3xl font-bold mb-4">Maintenance Requests</h1>
+
+        {user && (
+          <p className="text-gray-700 mb-6">
+            Logged in as: <span className="font-medium">{user.fullName}</span>
+          </p>
+        )}
+
         <p className="text-gray-700 mb-6">
           Report and review ongoing maintenance tasks.
         </p>
