@@ -1,5 +1,5 @@
 import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 
 export default function SubmitIssue() {
@@ -9,6 +9,13 @@ export default function SubmitIssue() {
   const [unit, setUnit] = useState("");
   const [description, setDescription] = useState("");
   const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setName(user.firstName || user.username || "");
+      setUnit(user.publicMetadata?.unit || ""); 
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,9 +30,7 @@ export default function SubmitIssue() {
 
     if (res.ok) {
       setShowToast(true);
-      setName("");
-      setUnit("");
-      setDescription("");
+      setDescription(""); 
       setTimeout(() => setShowToast(false), 3000);
     } else {
       alert("Submission failed.");
@@ -48,6 +53,7 @@ export default function SubmitIssue() {
                 onChange={(e) => setName(e.target.value)}
                 required
                 className="w-full border rounded p-2"
+                disabled
               />
             </div>
             <div>
@@ -57,6 +63,7 @@ export default function SubmitIssue() {
                 onChange={(e) => setUnit(e.target.value)}
                 required
                 className="w-full border rounded p-2"
+                disabled
               />
             </div>
             <div>
