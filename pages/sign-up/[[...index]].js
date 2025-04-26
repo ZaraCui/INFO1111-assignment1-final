@@ -2,7 +2,7 @@ import { SignUp } from "@clerk/nextjs";
 
 export default function SignUpPage() {
   return (
-    <div className="h-screen w-screen flex items-center justify-center">
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
       <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
     </div>
   );
