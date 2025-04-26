@@ -32,7 +32,7 @@ export default function Finances() {
         <SignedIn>
           <h1 className="text-3xl font-bold mb-4">Finances</h1>
           <p className="mb-4 text-gray-600">
-            Welcome, <span className="font-medium">{user.fullName}</span>
+            Welcome, <span className="font-medium">{user?.fullName || "User"}</span>
           </p>
           <p className="text-gray-700 mb-8">
             Review financial summaries, levies, and budgets.

@@ -17,7 +17,9 @@ export default function Navbar() {
       <div className="ml-auto flex gap-4 items-center">
         {isSignedIn ? (
           <>
-            <span className="text-gray-600">Hi, {user.firstName}</span>
+            <span className="text-gray-600">
+              Hi, {user?.firstName || "User"}
+            </span>
             <UserButton afterSignOutUrl="/" />
           </>
         ) : (
