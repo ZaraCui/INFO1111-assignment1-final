@@ -3,10 +3,9 @@ import { useUser } from "@clerk/nextjs";
 import Layout from "../components/Layout";
 import Image from "next/image";
 
-export async function getServerSideProps({ req }) {
-  const auth = getAuth(req);
-
-  if (!auth.userId) {
+export async function getServerSideProps(context) {
+  const { userId } = await getAuth(context.req);  // 加上 await！
+  if (!userId) {
     return {
       redirect: {
         destination: "/sign-in",
@@ -14,7 +13,6 @@ export async function getServerSideProps({ req }) {
       }
     };
   }
-
   return { props: {} };
 }
 

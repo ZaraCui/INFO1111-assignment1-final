@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import Layout from "../components/Layout";
 
 export async function getServerSideProps(context) {
-  const { userId } = getAuth(context.req);
+  const { userId } = await getAuth(context.req);  // 加上 await！！
   if (!userId) {
     return {
       redirect: {
@@ -25,7 +25,7 @@ export default function Maintenance() {
   ];
 
   return (
-    <Layout>
+    <Layout username={user?.firstName || user?.username}> 
       <main className="p-6 bg-gray-100 min-h-screen">
         <h1 className="text-3xl font-bold mb-4">Maintenance Requests</h1>
 
