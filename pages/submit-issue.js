@@ -1,20 +1,6 @@
-import { getAuth } from "@clerk/nextjs/server";
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { useState } from "react";
 import Layout from "../components/Layout";
-
-export async function getServerSideProps(context) {
-  const { userId } = getAuth(context.req);
-  if (!userId) {
-    return {
-      redirect: {
-        destination: "/sign-in",
-        permanent: false,
-      },
-    };
-  }
-  return { props: {} };
-}
 
 export default function SubmitIssue() {
   const { user } = useUser();
@@ -49,51 +35,64 @@ export default function SubmitIssue() {
   return (
     <Layout username={user?.firstName || user?.username}>
       <main className="p-6 bg-gray-100 min-h-screen">
-        <h1 className="text-2xl font-bold mb-4">Submit a Maintenance Issue</h1>
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-2xl shadow space-y-4 max-w-md"
-        >
-          <div>
-            <label className="block mb-1 font-medium">Your Name</label>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="w-full border rounded p-2"
-            />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Unit Number</label>
-            <input
-              value={unit}
-              onChange={(e) => setUnit(e.target.value)}
-              required
-              className="w-full border rounded p-2"
-            />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Issue Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              className="w-full border rounded p-2"
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        <SignedIn>
+          <h1 className="text-2xl font-bold mb-4">Submit a Maintenance Issue</h1>
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-2xl shadow space-y-4 max-w-md"
           >
-            Submit
-          </button>
-        </form>
+            <div>
+              <label className="block mb-1 font-medium">Your Name</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full border rounded p-2"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Unit Number</label>
+              <input
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                required
+                className="w-full border rounded p-2"
+              />
+            </div>
+            <div>
+              <label className="block mb-1 font-medium">Issue Description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                className="w-full border rounded p-2"
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+              Submit
+            </button>
+          </form>
 
-        {showToast && (
-          <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
-            ✅ Your issue has been submitted!
+          {showToast && (
+            <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
+              ✅ Your issue has been submitted!
+            </div>
+          )}
+        </SignedIn>
+
+        <SignedOut>
+          <div className="text-center mt-20">
+            <h2 className="text-2xl font-semibold mb-4">Please sign in first</h2>
+            <SignInButton mode="modal">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                Sign In
+              </button>
+            </SignInButton>
           </div>
-        )}
+        </SignedOut>
       </main>
     </Layout>
   );
