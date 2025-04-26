@@ -1,19 +1,5 @@
-import { getAuth } from "@clerk/nextjs/server";
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import Layout from "../components/Layout";
-
-export async function getServerSideProps(context) {
-  const { userId } = await getAuth(context.req);  // 加上 await！！
-  if (!userId) {
-    return {
-      redirect: {
-        destination: "/sign-in",
-        permanent: false
-      }
-    };
-  }
-  return { props: {} };
-}
 
 export default function Maintenance() {
   const { user } = useUser();
@@ -25,37 +11,48 @@ export default function Maintenance() {
   ];
 
   return (
-    <Layout username={user?.firstName || user?.username}> 
+    <Layout>
       <main className="p-6 bg-gray-100 min-h-screen">
-        <h1 className="text-3xl font-bold mb-4">Maintenance Requests</h1>
+        <SignedIn>
+          <h1 className="text-3xl font-bold mb-4">Maintenance Requests</h1>
 
-        {user && (
           <p className="text-gray-700 mb-6">
-            Logged in as: <span className="font-medium">{user.fullName}</span>
+            Logged in as: <span className="font-medium">{user?.fullName || "User"}</span>
           </p>
-        )}
 
-        <p className="text-gray-700 mb-6">
-          Report and review ongoing maintenance tasks.
-        </p>
+          <p className="text-gray-700 mb-6">
+            Report and review ongoing maintenance tasks.
+          </p>
 
-        <div className="space-y-4">
-          {issues.map((issue, i) => (
-            <div key={i} className="bg-white p-4 rounded-2xl shadow">
-              <h2 className="text-lg font-semibold">{issue.title}</h2>
-              <p className="text-gray-600">Unit: {issue.unit}</p>
-              <p
-                className={`font-bold ${
-                  issue.status === "Urgent"
-                    ? "text-red-600"
-                    : "text-green-600"
-                }`}
-              >
-                {issue.status}
-              </p>
-            </div>
-          ))}
-        </div>
+          <div className="space-y-4">
+            {issues.map((issue, i) => (
+              <div key={i} className="bg-white p-4 rounded-2xl shadow">
+                <h2 className="text-lg font-semibold">{issue.title}</h2>
+                <p className="text-gray-600">Unit: {issue.unit}</p>
+                <p
+                  className={`font-bold ${
+                    issue.status === "Urgent"
+                      ? "text-red-600"
+                      : "text-green-600"
+                  }`}
+                >
+                  {issue.status}
+                </p>
+              </div>
+            ))}
+          </div>
+        </SignedIn>
+
+        <SignedOut>
+          <div className="text-center mt-20">
+            <h2 className="text-2xl font-semibold mb-4">Please sign in to view maintenance requests.</h2>
+            <SignInButton mode="modal">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                Sign In
+              </button>
+            </SignInButton>
+          </div>
+        </SignedOut>
       </main>
     </Layout>
   );

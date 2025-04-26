@@ -1,39 +1,42 @@
-import { getAuth } from "@clerk/nextjs/server";
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import Layout from "../components/Layout";
 import Image from "next/image";
-
-export async function getServerSideProps(context) {
-  const { userId } = await getAuth(context.req);  // 加上 await！
-  if (!userId) {
-    return {
-      redirect: {
-        destination: "/sign-in",
-        permanent: false
-      }
-    };
-  }
-  return { props: {} };
-}
 
 export default function Documents() {
   const { user } = useUser();
 
   return (
-    <Layout username={user?.firstName || user?.username}>
+    <Layout>
       <main className="p-6 bg-gray-100 min-h-screen">
-        <h1 className="text-2xl font-bold mb-4">Documents</h1>
-        <p className="text-gray-700 mb-6">
-          Access strata reports and records below.
-        </p>
+        <SignedIn>
+          <h1 className="text-2xl font-bold mb-4">Documents</h1>
+          <p className="text-gray-700 mb-6">
+            Welcome, <span className="font-medium">{user?.fullName || "User"}</span>
+          </p>
 
-        <Image
-          src="/banner.jpg"
-          alt="Apartment building"
-          width={1000}
-          height={600}
-          className="rounded-lg shadow"
-        />
+          <p className="text-gray-700 mb-6">
+            Access strata reports and records below.
+          </p>
+
+          <Image
+            src="/banner.jpg"
+            alt="Apartment building"
+            width={1000}
+            height={600}
+            className="rounded-lg shadow"
+          />
+        </SignedIn>
+
+        <SignedOut>
+          <div className="text-center mt-20">
+            <h2 className="text-2xl font-semibold mb-4">Please sign in to view documents.</h2>
+            <SignInButton mode="modal">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                Sign In
+              </button>
+            </SignInButton>
+          </div>
+        </SignedOut>
       </main>
     </Layout>
   );
