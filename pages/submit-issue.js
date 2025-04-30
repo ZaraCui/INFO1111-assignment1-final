@@ -13,12 +13,17 @@ export default function SubmitIssue() {
   useEffect(() => {
     if (user) {
       setName(user.firstName || user.username || "");
-      setUnit(user.publicMetadata?.unit || ""); 
+      setUnit(user.publicMetadata?.unit || "");
     }
   }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!name || !unit || !description) {
+      alert("Please ensure all fields are properly filled.");
+      return;
+    }
 
     const res = await fetch("/api/submit-issue", {
       method: "POST",
@@ -30,7 +35,7 @@ export default function SubmitIssue() {
 
     if (res.ok) {
       setShowToast(true);
-      setDescription(""); 
+      setDescription("");
       setTimeout(() => setShowToast(false), 3000);
     } else {
       alert("Submission failed.");
@@ -65,6 +70,11 @@ export default function SubmitIssue() {
                 className="w-full border rounded p-2"
                 disabled
               />
+              {!unit && (
+                <p className="text-red-500 text-sm mt-2">
+                  ⚠️ You haven't set your unit number. Please contact an admin to update your profile.
+                </p>
+              )}
             </div>
             <div>
               <label className="block mb-1 font-medium">Issue Description</label>

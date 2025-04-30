@@ -4,6 +4,7 @@ import Image from "next/image";
 
 export default function Documents() {
   const { user } = useUser();
+  const role = user?.publicMetadata?.role;
 
   return (
     <Layout>
@@ -11,25 +12,37 @@ export default function Documents() {
         <SignedIn>
           <h1 className="text-2xl font-bold mb-4">Documents</h1>
           <p className="text-gray-700 mb-6">
-            Welcome, <span className="font-medium">{user?.fullName || "User"}</span>
+            Welcome,{" "}
+            <span className="font-medium">{user?.fullName || "User"}</span>
           </p>
 
-          <p className="text-gray-700 mb-6">
-            Access strata reports and records below.
-          </p>
+          {role !== "admin" ? (
+            <p className="text-red-600 mt-10">
+              您没有权限访问此页面。请联系管理员。
+            </p>
+          ) : (
+            <>
+              <p className="text-gray-700 mb-6">
+                Access strata reports and records below.
+              </p>
 
-          <Image
-            src="/banner.jpg"
-            alt="Apartment building"
-            width={1000}
-            height={600}
-            className="rounded-lg shadow"
-          />
+              <Image
+                src="/banner.jpg"
+                alt="Apartment building"
+                width={1000}
+                height={600}
+                className="rounded-lg shadow"
+              />
+              {/* You can download PDF preview here */}
+            </>
+          )}
         </SignedIn>
 
         <SignedOut>
           <div className="text-center mt-20">
-            <h2 className="text-2xl font-semibold mb-4">Please sign in to view documents.</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              Please sign in to view documents.
+            </h2>
             <SignInButton mode="modal">
               <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                 Sign In
