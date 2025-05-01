@@ -10,18 +10,25 @@ export default function AdminTools() {
   const handleSetAdminMetadata = async () => {
     if (!user) return;
 
-    try {
-      await user.update({
-        publicMetadata: {
+    const res = await fetch("/api/set-metadata", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: user.id,
+        metadata: {
           role: "admin",
           unit: "105",
         },
-      });
+      }),
+    });
+
+    if (res.ok) {
       setDone(true);
       setError(null);
-    } catch (err) {
-      console.error("❌ Failed to update metadata:", err);
-      setError("Failed to set metadata. Please check the console.");
+    } else {
+      const err = await res.json();
+      setError("❌ Failed: " + err.error);
+      console.error("API error:", err);
     }
   };
 
@@ -51,7 +58,7 @@ export default function AdminTools() {
 
           {error && (
             <p className="mt-4 text-red-600 font-medium">
-              ❌ {error}
+              {error}
             </p>
           )}
         </SignedIn>
