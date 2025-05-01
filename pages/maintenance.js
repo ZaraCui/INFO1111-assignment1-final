@@ -38,13 +38,13 @@ export default function Maintenance() {
 
           {role !== "admin" && !unit && (
             <p className="text-red-600 mb-6">
-              ⚠️ 您尚未设置单元信息，无法查看报修记录。
+              ⚠️ You have not set the unit information and cannot view the repair record.
             </p>
           )}
 
           {visibleIssues.length === 0 ? (
             <p className="text-gray-500 italic">
-              没有可查看的报修记录。
+              There is no report history to view.
             </p>
           ) : (
             <div className="space-y-4">

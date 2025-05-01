@@ -18,7 +18,7 @@ export default function Documents() {
 
           {role !== "admin" ? (
             <p className="text-red-600 mt-10">
-              您没有权限访问此页面。请联系管理员。
+              You do not have access to this page. Please contact your administrator.
             </p>
           ) : (
             <>
