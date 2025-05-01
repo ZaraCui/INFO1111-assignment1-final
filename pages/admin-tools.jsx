@@ -5,18 +5,24 @@ import Layout from "../components/Layout";
 export default function AdminTools() {
   const { user, isSignedIn } = useUser();
   const [done, setDone] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSetAdminMetadata = async () => {
     if (!user) return;
 
-    await user.update({
-      publicMetadata: {
-        role: "admin",
-        unit: "105", 
-      },
-    });
-
-    setDone(true);
+    try {
+      await user.update({
+        publicMetadata: {
+          role: "admin",
+          unit: "105",
+        },
+      });
+      setDone(true);
+      setError(null);
+    } catch (err) {
+      console.error("❌ Failed to update metadata:", err);
+      setError("Failed to set metadata. Please check the console.");
+    }
   };
 
   return (
@@ -36,9 +42,16 @@ export default function AdminTools() {
           >
             Set Me as Admin
           </button>
+
           {done && (
             <p className="mt-4 text-green-600 font-medium">
               ✅ Metadata set successfully! You are now an admin.
+            </p>
+          )}
+
+          {error && (
+            <p className="mt-4 text-red-600 font-medium">
+              ❌ {error}
             </p>
           )}
         </SignedIn>
