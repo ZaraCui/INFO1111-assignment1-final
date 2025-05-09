@@ -3,6 +3,11 @@
   "builds": [
     { "src": "package.json", "use": "@vercel/next" }
   ],
+  "functions": {
+    "api/*.php": {
+      "runtime": "vercel-php@0.5.0"
+    }
+  },
   "redirects": [
     {
       "source": "/form-submitted",
