@@ -11,15 +11,11 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/form-submitted",
-      "destination": "/thanks",
-      "statusCode": 302
+      "src": "/form-submitted",
+      "status": 302,
+      "headers": {
+        "Location": "/thanks"
+      }
     }
   ],
   "crons": [
