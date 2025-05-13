@@ -1,6 +1,5 @@
-// middleware.js
-import { withClerkMiddleware } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
+import { withClerkMiddleware } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isDev = process.env.NODE_ENV !== "production";
 
