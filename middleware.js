@@ -9,7 +9,7 @@ const publicRoutes = [
   "/documents",
   "/maintenance",
   "/finances",
-  "/api/fund-summary"
+  "/pages/api/fund-summary"
 ];
 
 const isDev = process.env.NODE_ENV !== "production";
