@@ -1,10 +1,17 @@
-// middleware.js
-import { withClerkMiddleware } from "@clerk/nextjs/api";
+import { clerkClient } from '@clerk/nextjs/server';
 
-export default withClerkMiddleware();
+export async function getServerSideProps(context) {
+  const { userId } = await clerkClient.users.getUser(context.req.cookies.__session);
+  if (!userId) {
+    return {
+      redirect: {
+        destination: '/sign-in',
+        permanent: false,
+      },
+    };
+  }
 
-export const config = {
-  matcher: [
-    "/((?!_next|.*\\..*|favicon.ico).*)",
-  ],
-};
+  return {
+    props: {}, // or pass user data here
+  };
+}
