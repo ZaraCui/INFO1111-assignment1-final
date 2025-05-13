@@ -1,15 +1,13 @@
-import { authMiddleware } from "@clerk/nextjs";  
-import { NextResponse } from "next/server";
+// middleware.js
+import { withClerkMiddleware } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
 const isDev = process.env.NODE_ENV !== "production";
 
 export default isDev
-  ? () => NextResponse.next()  
-  : authMiddleware({
-      publicRoutes: ["/", "/sign-in(.*)", "/sign-up(.*)", "/submit-issue"],
-    });
+  ? () => NextResponse.next()
+  : withClerkMiddleware(() => NextResponse.next());
 
 export const config = {
   matcher: ["/((?!_next|.*\\..*).*)"],
 };
-
