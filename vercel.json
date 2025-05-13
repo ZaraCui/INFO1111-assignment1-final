@@ -1,13 +1,21 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "package.json", "use": "@vercel/next" }
-  ],
-  "redirects": [
+  "functions": {
+    "api/*.php": {
+      "runtime": "vercel-php@0.7.3"
+    }
+  },
+  "routes": [
     {
-      "source": "/form-submitted",
-      "destination": "/thanks",
-      "statusCode": 302
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/form-submitted",
+      "status": 302,
+      "headers": {
+        "Location": "/thanks"
+      }
     }
   ],
   "crons": [
