@@ -1,10 +1,18 @@
-import { withClerkMiddleware } from "@clerk/nextjs";  // ✅ Correct import for Clerk v6
-import { NextResponse } from "next/server";
+// middleware.js
+import { authMiddleware } from '@clerk/nextjs/server';
 
-export default withClerkMiddleware(() => {
-  return NextResponse.next();
+export default authMiddleware({
+  publicRoutes: [
+    '/', 
+    '/sign-in(.*)', 
+    '/sign-up(.*)', 
+    '/thank', 
+    '/api/fund-summary'
+  ]
 });
 
 export const config = {
-  matcher: ["/((?!_next|.*\\..*).*)"],
+  matcher: [
+    '/((?!_next|favicon.ico|.*\\..*).*)'
+  ],
 };
