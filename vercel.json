@@ -15,5 +15,6 @@
       "path": "/api/weekly-report",
       "schedule": "0 10 * * 1"
     }
-  ]
+  ],
+  "regions": ["syd1"]
 }

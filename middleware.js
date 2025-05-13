@@ -1,17 +1,13 @@
-import { clerkClient } from '@clerk/nextjs/server';
+import { authMiddleware } from "@clerk/nextjs/server";
 
-export async function getServerSideProps(context) {
-  const { userId } = await clerkClient.users.getUser(context.req.cookies.__session);
-  if (!userId) {
-    return {
-      redirect: {
-        destination: '/sign-in',
-        permanent: false,
-      },
-    };
-  }
+const isDev = process.env.NODE_ENV !== "production"; 
 
-  return {
-    props: {}, // or pass user data here
-  };
-}
+export default isDev
+  ? (req) => req.next()  
+  : authMiddleware({
+      publicRoutes: ["/", "/sign-in(.*)", "/sign-up(.*)", "/submit-issue"],
+    });
+
+export const config = {
+  matcher: ["/((?!_next|.*\\..*).*)"],
+};
