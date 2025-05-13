@@ -1,15 +1,15 @@
 import { authMiddleware } from "@clerk/nextjs/server";
 
 const publicRoutes = [
-  "/", 
-  "/sign-in(.*)", 
-  "/sign-up(.*)", 
+  "/",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
   "/submit-issue",
   "/thank",
   "/documents",
   "/maintenance",
   "/finances",
-  "/pages/api/fund-summary"
+  "/api/fund-summary"  // ✅ 正确路径
 ];
 
 const isDev = process.env.NODE_ENV !== "production";
