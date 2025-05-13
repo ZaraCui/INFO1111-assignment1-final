@@ -1,4 +1,4 @@
-import { authMiddleware } from "@clerk/nextjs/server";
+import { authMiddleware } from "@clerk/nextjs";  
 import { NextResponse } from "next/server";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -12,3 +12,4 @@ export default isDev
 export const config = {
   matcher: ["/((?!_next|.*\\..*).*)"],
 };
+
