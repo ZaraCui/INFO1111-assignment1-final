@@ -17,20 +17,8 @@ export default function Finances() {
 
   useEffect(() => {
     fetch("/api/fund-summary")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch fund summary");
-        return res.json();
-      })
-      .then((data) => {
-        setFunds({
-          admin: typeof data.admin === "number" ? data.admin : 0,
-          capital: typeof data.capital === "number" ? data.capital : 0,
-        });
-      })
-      .catch((err) => {
-        console.error("Error fetching funds:", err.message);
-        setFunds({ admin: 0, capital: 0 });
-      });
+      .then((res) => res.json())
+      .then((data) => setFunds(data));
   }, []);
 
   const data = [
@@ -63,7 +51,7 @@ export default function Finances() {
                 <div className="bg-white p-5 rounded-2xl shadow">
                   <h2 className="text-xl font-semibold mb-2">Admin Fund</h2>
                   <p className="text-2xl text-green-600 font-bold">
-                    ${typeof funds.admin === "number" ? funds.admin.toLocaleString() : "N/A"}
+                    ${funds.admin.toLocaleString()}
                   </p>
                 </div>
                 <div className="bg-white p-5 rounded-2xl shadow">
@@ -71,7 +59,7 @@ export default function Finances() {
                     Capital Works Fund
                   </h2>
                   <p className="text-2xl text-blue-600 font-bold">
-                    ${typeof funds.capital === "number" ? funds.capital.toLocaleString() : "N/A"}
+                    ${funds.capital.toLocaleString()}
                   </p>
                 </div>
               </div>
