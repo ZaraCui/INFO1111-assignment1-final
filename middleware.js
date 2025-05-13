@@ -1,18 +1,18 @@
-// middleware.js
-import { authMiddleware } from '@clerk/nextjs/server';
+// middleware.js（兼容 Clerk v6.19.2）
+import { authMiddleware } from "@clerk/nextjs/server";
 
 export default authMiddleware({
   publicRoutes: [
-    '/', 
-    '/sign-in(.*)', 
-    '/sign-up(.*)', 
-    '/thank', 
-    '/api/fund-summary'
+    "/",
+    "/sign-in(.*)",
+    "/sign-up(.*)",
+    "/thank",
+    "/api/fund-summary"
   ]
 });
 
 export const config = {
   matcher: [
-    '/((?!_next|favicon.ico|.*\\..*).*)'
+    "/((?!_next|favicon.ico|.*\\..*).*)"
   ],
 };
