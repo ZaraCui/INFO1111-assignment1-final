@@ -18,4 +18,3 @@ export default isDev
 export const config = {
   matcher: ["/((?!_next|.*\\..*).*)"],
 };
-```
