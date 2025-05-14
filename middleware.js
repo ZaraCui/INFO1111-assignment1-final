@@ -1,28 +1,21 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-// 公开访问的路径列表
 const publicRoutes = [
   "/",
   "/sign-in(.*)",
   "/sign-up(.*)",
-  "/submit-issue",
-  "/thank",
-  "/documents",
-  "/maintenance",
-  "/finances",
-  "/api/fund-summary"
+  "/submit-issue"
 ];
 
-// 中间件主函数
-export default clerkMiddleware({
-  publicRoutes,
-});
+const isDev = process.env.NODE_ENV !== "production";
 
-// 配置匹配路径（不作用于静态资源等）
+export default isDev
+  ? (req) => req.next()
+  : clerkMiddleware({
+      publicRoutes,
+    });
+
 export const config = {
-  matcher: [
-    '/((?!.*\\..*|_next).*)',  // 排除静态文件和_next
-    '/',                       // 首页
-    '/(api|trpc)(.*)'          // API 路由
-  ],
+  matcher: ["/((?!_next|.*\\..*).*)"],
 };
+```
