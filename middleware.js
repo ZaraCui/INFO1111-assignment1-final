@@ -1,4 +1,7 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+// middleware.js
+
+// 1️⃣ Import from the Edge entrypoint
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/edge";
 
 const publicRoutes = [
   "/",
@@ -6,24 +9,21 @@ const publicRoutes = [
   "/sign-up(.*)",
   "/submit-issue"
 ];
-
-// build a function to detect “public” requests
 const isPublicRoute = createRouteMatcher(publicRoutes);
 
-const isDev = process.env.NODE_ENV !== "production";
+// 2️⃣ (Optional) force this file to run as an Edge function
+export const runtime = "experimental-edge";
 
-export default isDev
-  ? (req) => req.next()
-  : clerkMiddleware(
-      // only protect routes that are NOT in `publicRoutes`
-      async (auth, req) => {
-        if (!isPublicRoute(req)) {
-          await auth.protect();
-        }
-      },
-      // optional: enable debug logs when developing
-      { debug: process.env.NODE_ENV === "development" }
-    );
+export default clerkMiddleware(
+  // only protect requests *not* on your public list
+  async (auth, req) => {
+    if (!isPublicRoute(req)) {
+      await auth.protect();
+    }
+  },
+  // you can turn on debug to see which routes Clerk skips or protects
+  { debug: process.env.NODE_ENV === "development" }
+);
 
 export const config = {
   matcher: ["/((?!_next|.*\\..*).*)"],
