@@ -1,24 +1,16 @@
 // middleware.js
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs/server";
 
-const publicRoutes = [
-  "/",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/submit-issue"
-];
-const isPublicRoute = createRouteMatcher(publicRoutes);
-
-export default clerkMiddleware((auth, req) => {
-  // if this isn’t one of your public paths, enforce auth
-  if (!isPublicRoute(req)) {
-    auth().protect();
-  }
-  return NextResponse.next();
+export default authMiddleware({
+  publicRoutes: [
+    "/",                // your homepage
+    "/sign-in(.*)",     // the Clerk sign-in widget
+    "/sign-up(.*)",     // the Clerk sign-up widget
+    "/submit-issue"     // your issue form
+  ],
 });
 
-// only run on “real” pages / API routes (skip _next, static files, etc)
 export const config = {
-  matcher: ["/((?!_next|.*\\..*).*)"]
+  // protect everything except _next/static, files, etc
+  matcher: ["/((?!_next|.*\\..*).*)"],
 };
