@@ -1,5 +1,5 @@
-import { authMiddleware } from "@clerk/nextjs/server";
-
+import { clerkMiddleware } from '@clerk/nextjs/server';
+ 
 const publicRoutes = [
   "/",
   "/sign-in(.*)",
